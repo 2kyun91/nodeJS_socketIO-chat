@@ -1,0 +1,25 @@
+doctype
+html
+    head
+        meta(charset='utf-8')
+        title GIF 채팅방
+    body
+        div F12를 눌러 console 탭과 network 탭을 확인하세요.
+        script(src='/socket.io/socket.io.js')
+        script.
+            // WebSocket 생성자에 연결할 서버 주소를 넣고 webSocket 객체를 생성한다. 프로토콜이 ws이다.
+            // 클라이언트에서도 서버와 마찬가지로 이벤트 기반으로 동작한다.
+            // ws 프로토콜이 아니라 http 프로토콜을 사용한다는 점이 ws 모듈과 다르다.
+            // 옵션으로 준 path와 서버의 path 옵션이 일치해야 통신이 가능하다.
+            // Socket.IO는 먼저 폴링 방식으로 서버와 연결한다.
+            // 그렇게 때문에 코드에서 HTTP 프로토콜을 사용한다.
+            // 폴링 연결 후 웹 소켓을 사용할 수 있다면 웹 소켓으로 업그레이드 한다.
+            var socket = io.connect('http://localhost:8005', {
+                path : '/socket.io',
+                transports : ['websocket'], // 처음부터 웹 소켓만 사용하고 싶다면 transports 옵션을 주면 된다.
+            });
+
+            socket.on('news', function (data) {
+                console.log(data);
+                socket.emit('reply', 'Hello Node JS');
+            });
